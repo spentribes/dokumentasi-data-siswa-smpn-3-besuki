@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumpulan Data Siswa - SMPN 3 Besuki</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .logo-container {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: white;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group label span {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        /* File Upload Section */
+        .file-category {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .file-category:hover {
+            border-color: #2a5298;
+            box-shadow: 0 2px 10px rgba(42, 82, 152, 0.1);
+        }
+
+        .file-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .file-category-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .file-category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-foto { background: #e3f2fd; }
+        .icon-kk { background: #f3e5f5; }
+        .icon-akta { background: #fff3e0; }
+        .icon-ijazah { background: #e8f5e9; }
+
+        .file-count-badge {
+            background: #2a5298;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .file-upload-box {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .file-upload-box:hover {
+            border-color: #2a5298;
+            background: #f0f7ff;
+        }
+
+        .file-upload-box.dragover {
+            border-color: #2a5298;
+            background: #e8f0ff;
+        }
+
+        .file-upload-box input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: #2a5298;
+            margin-bottom: 8px;
+        }
+
+        .file-upload-text {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .file-list {
+            margin-top: 12px;
+        }
+
+        .file-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .file-item .file-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .file-item .file-name small {
+            color: #666;
+        }
+
+        .file-item .remove-file {
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 5px;
+        }
+
+        .file-item .remove-file:hover {
+            background: #ffeaea;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(42, 82, 152, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .status-message.loading {
+            background: #cce5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+            display: block;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: #2a5298;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #2a5298;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            color: #1e3c72;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="logo sekolah.png" alt="Logo SMPN 3 Besuki" onerror="this.style.display='none'">
+            </div>
+            <h1>Pengumpulan Data Siswa</h1>
+            <p>SMPN 3 Besuki - Tata Usaha</p>
+        </div>
+
+        <div class="card">
+            <div id="statusMessage" class="status-message"></div>
+
+            <div class="info-box">
+                <p>💡 <strong>Petunjuk:</strong> Isi data siswa dengan lengkap, kemudian upload file dokumen pada kategori yang sesuai. File akan otomatis berganti nama sesuai format.</p>
+            </div>
+
+            <form id="dataForm">
+                <!-- Data Siswa -->
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap <span>*</span></label>
+                    <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap">
+                </div>
+
+                <div class="form-group">
+                    <label for="nisn">NISN <span>*</span></label>
+                    <input type="text" id="nisn" name="nisn" required placeholder="10 digit NISN" maxlength="10" pattern="[0-9]{10}">
+                </div>
+
+                <div class="form-group">
+                    <label for="tapel">Tahun Pelajaran <span>*</span></label>
+                    <select id="tapel" name="tapel" required>
+                        <option value="">-- Pilih Tahun Pelajaran --</option>
+                        <option value="2024/2025">2024/2025</option>
+                        <option value="2025/2026">2025/2026</option>
+                        <option value="2026/2027">2026/2027</option>
+                        <option value="2027/2028">2027/2028</option>
+                        <option value="2028/2029">2028/2029</option>
+                        <option value="2029/2030">2029/2030</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="kelas">Kelas <span>*</span></label>
+                    <select id="kelas" name="kelas" required>
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="VII">VII (Tujuh)</option>
+                        <option value="VIII">VIII (Delapan)</option>
+                        <option value="IX">IX (Sembilan)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="rombel">Rombel <span>*</span></label>
+                    <select id="rombel" name="rombel" required>
+                        <option value="">-- Pilih Rombel --</option>
+                    </select>
+                </div>
+
+                <!-- Upload File per Kategori -->
+                <div class="file-category" data-category="foto">
+                    <div class="file-category-header">
+                        <div class="file-category-title">
+                            <div class="file-category-icon icon-foto">📷</div>
+                            <span>Pas Foto 3x4</span>
+                        </div>
+                        <span class="file-count-badge" id="count-foto">0</span>
+                    </div>
+                    <div class="file-upload-box" onclick="document.getElementById('input-foto').click()">
+                        <input type="file" id="input-foto" accept=".jpg,.jpeg,.png" onchange="handleFiles(this, 'foto')">
+                        <div class="file-upload-icon">📷</div>
+                        <div class="file-upload-text">
+                            <strong>Klik atau drag file di sini</strong><br>
+                            <small>Format: JPG, PNG (Maks 5MB)</small>
+                        </div>
+                    </div>
+                    <div class="file-list" id="list-foto"></div>
+                </div>
+
+                <div class="file-category" data-category="kk">
+                    <div class="file-category-header">
+                        <div class="file-category-title">
+                            <div class="file-category-icon icon-kk">📋</div>
+                            <span>Kartu Keluarga (KK)</span>
+                        </div>
+                        <span class="file-count-badge" id="count-kk">0</span>
+                    </div>
+                    <div class="file-upload-box" onclick="document.getElementById('input-kk').click()">
+                        <input type="file" id="input-kk" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFiles(this, 'kk')">
+                        <div class="file-upload-icon">📋</div>
+                        <div class="file-upload-text">
+                            <strong>Klik atau drag file di sini</strong><br>
+                            <small>Format: PDF, JPG, PNG (Maks 10MB)</small>
+                        </div>
+                    </div>
+                    <div class="file-list" id="list-kk"></div>
+                </div>
+
+                <div class="file-category" data-category="akta">
+                    <div class="file-category-header">
+                        <div class="file-category-title">
+                            <div class="file-category-icon icon-akta">📜</div>
+                            <span>Akta Kelahiran</span>
+                        </div>
+                        <span class="file-count-badge" id="count-akta">0</span>
+                    </div>
+                    <div class="file-upload-box" onclick="document.getElementById('input-akta').click()">
+                        <input type="file" id="input-akta" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFiles(this, 'akta')">
+                        <div class="file-upload-icon">📜</div>
+                        <div class="file-upload-text">
+                            <strong>Klik atau drag file di sini</strong><br>
+                            <small>Format: PDF, JPG, PNG (Maks 10MB)</small>
+                        </div>
+                    </div>
+                    <div class="file-list" id="list-akta"></div>
+                </div>
+
+                <div class="file-category" data-category="ijazah">
+                    <div class="file-category-header">
+                        <div class="file-category-title">
+                            <div class="file-category-icon icon-ijazah">🎓</div>
+                            <span>Ijazah SD / SKHUN</span>
+                        </div>
+                        <span class="file-count-badge" id="count-ijazah">0</span>
+                    </div>
+                    <div class="file-upload-box" onclick="document.getElementById('input-ijazah').click()">
+                        <input type="file" id="input-ijazah" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFiles(this, 'ijazah')">
+                        <div class="file-upload-icon">🎓</div>
+                        <div class="file-upload-text">
+                            <strong>Klik atau drag file di sini</strong><br>
+                            <small>Format: PDF, JPG, PNG (Maks 10MB)</small>
+                        </div>
+                    </div>
+                    <div class="file-list" id="list-ijazah"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    💾 Simpan ke Google Drive
+                </button>
+            </form>
+        </div>
+
+        <div style="text-align: center; color: white; margin-top: 20px; opacity: 0.8;">
+            <small>&copy; 2025 SMPN 3 Besuki - Tata Usaha</small>
+        </div>
+    </div>
+
+    <script>
+        // ================================================
+        // KONFIGURASI - ISI URL DEPLOYMENT KAMU DI SINI
+        // ================================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxv9iirlmcUTkAzeGjV3PEcrK3tKExJkqbbYPMzcarBumN0s7AloZKAl-rXQRGVHcCcpA/exec';
+
+        // State - File per kategori
+        let filesByCategory = {
+            foto: [],
+            kk: [],
+            akta: [],
+            ijazah: []
+        };
+
+        const maxSizes = {
+            foto: 5 * 1024 * 1024,  // 5MB
+            kk: 10 * 1024 * 1024,   // 10MB
+            akta: 10 * 1024 * 1024, // 10MB
+            ijazah: 10 * 1024 * 1024 // 10MB
+        };
+
+        // Mapping kategori ke prefix nama file
+        const filePrefix = {
+            foto: 'foto',
+            kk: 'kk',
+            akta: 'akta',
+            ijazah: 'ijazah'
+        };
+
+        // Opsi rombel per kelas
+        const rombelOptions = {
+            'VII': [
+                {value: 'VII-A', label: 'VII-A'},
+                {value: 'VII-B', label: 'VII-B'},
+                {value: 'VII-C', label: 'VII-C'},
+                {value: 'VII-D', label: 'VII-D'}
+            ],
+            'VIII': [
+                {value: 'VIII-A', label: 'VIII-A'},
+                {value: 'VIII-B', label: 'VIII-B'},
+                {value: 'VIII-C', label: 'VIII-C'},
+                {value: 'VIII-D', label: 'VIII-D'}
+            ],
+            'IX': [
+                {value: 'IX-A', label: 'IX-A'},
+                {value: 'IX-B', label: 'IX-B'},
+                {value: 'IX-C', label: 'IX-C'},
+                {value: 'IX-D', label: 'IX-D'}
+            ]
+        };
+
+        // Update rombel saat kelas berubah
+        document.getElementById('kelas').addEventListener('change', function() {
+            const rombelSelect = document.getElementById('rombel');
+            rombelSelect.innerHTML = '<option value="">-- Pilih Rombel --</option>';
+
+            if (this.value && rombelOptions[this.value]) {
+                rombelOptions[this.value].forEach(opt => {
+                    const option = document.createElement('option');
+                    option.value = opt.value;
+                    option.textContent = opt.label;
+                    rombelSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Handle file selection
+        function handleFiles(input, category) {
+            const files = input.files;
+            const maxSize = maxSizes[category];
+
+            for (let file of files) {
+                if (file.size > maxSize) {
+                    showStatus(`File ${file.name} terlalu besar. Maksimal ${maxSize/1024/1024}MB.`, 'error');
+                    continue;
+                }
+
+                const exists = filesByCategory[category].some(f => f.name === file.name && f.size === file.size);
+                if (!exists) {
+                    filesByCategory[category].push(file);
+                }
+            }
+            updateFileList(category);
+            input.value = '';
+        }
+
+        // Drag and drop
+        document.querySelectorAll('.file-upload-box').forEach(box => {
+            box.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                box.classList.add('dragover');
+            });
+            box.addEventListener('dragleave', () => {
+                box.classList.remove('dragover');
+            });
+            box.addEventListener('drop', (e) => {
+                e.preventDefault();
+                box.classList.remove('dragover');
+                const category = box.closest('.file-category').dataset.category;
+                handleFiles({ files: e.dataTransfer.files, value: '' }, category);
+            });
+        });
+
+        // Get file extension
+        function getFileExtension(filename) {
+            const parts = filename.split('.');
+            return parts.length > 1 ? parts[parts.length - 1].toLowerCase() : '';
+        }
+
+        // Update file list dengan preview nama baru
+        function updateFileList(category) {
+            const listEl = document.getElementById(`list-${category}`);
+            const countEl = document.getElementById(`count-${category}`);
+            const nama = document.getElementById('nama').value || 'Nama';
+            const nisn = document.getElementById('nisn').value || 'NISN';
+            const prefix = filePrefix[category];
+
+            listEl.innerHTML = '';
+            filesByCategory[category].forEach((file, index) => {
+                const ext = getFileExtension(file.name);
+                const newName = `${prefix}_${nama}_${nisn}.${ext}`;
+
+                const div = document.createElement('div');
+                div.className = 'file-item';
+                div.innerHTML = `
+                    <div class="file-name">
+                        <span>${getFileIcon(file.type)}</span>
+                        <span>${file.name}</span>
+                        <small>→ ${newName}</small>
+                    </div>
+                    <span class="remove-file" onclick="removeFile('${category}', ${index})">✕</span>
+                `;
+                listEl.appendChild(div);
+            });
+
+            countEl.textContent = filesByCategory[category].length;
+        }
+
+        function removeFile(category, index) {
+            filesByCategory[category].splice(index, 1);
+            updateFileList(category);
+        }
+
+        function getFileIcon(type) {
+            if (type.includes('pdf')) return '📕';
+            if (type.includes('image')) return '🖼️';
+            return '📄';
+        }
+
+        function getTotalFileCount() {
+            return Object.values(filesByCategory).reduce((sum, arr) => sum + arr.length, 0);
+        }
+
+        // Form Submit
+        document.getElementById('dataForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (getTotalFileCount() === 0) {
+                showStatus('Mohon upload minimal 1 file dokumen.', 'error');
+                return;
+            }
+
+            const nama = document.getElementById('nama').value;
+            const nisn = document.getElementById('nisn').value;
+
+            if (nisn && !/^\d{10}$/.test(nisn)) {
+                showStatus('NISN harus 10 digit angka.', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span>Mengupload...';
+            showStatus('Sedang mengupload file ke Google Drive...', 'loading');
+
+            try {
+                const formData = new FormData(e.target);
+
+                const categorizedFiles = {};
+                for (const [category, files] of Object.entries(filesByCategory)) {
+                    categorizedFiles[category] = [];
+                    const prefix = filePrefix[category];
+
+                    files.forEach((file, index) => {
+                        const ext = getFileExtension(file.name);
+                        const newName = `${prefix}_${nama}_${nisn}.${ext}`;
+
+                        categorizedFiles[category].push({
+                            originalName: file.name,
+                            newName: newName,
+                            type: file.type,
+                            data: null // akan diupload
+                        });
+                    });
+                }
+
+                // Upload files dan rename
+                for (const [category, fileInfos] of Object.entries(categorizedFiles)) {
+                    for (let i = 0; i < fileInfos.length; i++) {
+                        const originalFile = filesByCategory[category][i];
+                        fileInfos[i].data = await fileToBase64(originalFile);
+                    }
+                }
+
+                const payload = {
+                    action: 'uploadStudentDataRename',
+                    data: Object.fromEntries(formData),
+                    files: categorizedFiles
+                };
+
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const folderPath = `${formData.get('tapel')} > ${formData.get('kelas')} > ${formData.get('rombel')} > ${nama} (${nisn})`;
+                showStatus(`✅ Data berhasil disimpan!\n📂 ${folderPath}`, 'success');
+
+                e.target.reset();
+                filesByCategory = { foto: [], kk: [], akta: [], ijazah: [] };
+                Object.keys(filesByCategory).forEach(updateFileList);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus('❌ Terjadi kesalahan: ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '💾 Simpan ke Google Drive';
+            }
+        });
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function showStatus(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.className = 'status-message ' + type;
+            statusMessage.textContent = message;
+            statusMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    statusMessage.className = 'status-message';
+                }, 8000);
+            }
+        }
+
+        // Update preview nama file saat nama atau NISN berubah
+        document.getElementById('nama').addEventListener('input', () => {
+            Object.keys(filesByCategory).forEach(updateFileList);
+        });
+        document.getElementById('nisn').addEventListener('input', () => {
+            Object.keys(filesByCategory).forEach(updateFileList);
+        });
+    </script>
+</body>
+</html>
